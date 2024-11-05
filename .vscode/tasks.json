@@ -12,7 +12,7 @@
             "problemMatcher": [],
 			"options": {
 				"shell": {
-					"executable": "nu"
+					"executable": "powershell.exe"
 				}
 			}
         },
