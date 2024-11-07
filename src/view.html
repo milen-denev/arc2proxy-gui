@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ARC2 Proxy Manager</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="/models.js" defer></script>
+    <script type="module" src="/view.js" defer></script>
+  </head>
+
+  <body>
+    <main class="container">
+      <h1 style="font-size:larger">Startup Settings</h1>
+      <table id="startup_settings">
+          <tr>
+              <td><b>Listening Address: </b><span id="listening_address"></span></td>
+              <td><b>HTTP Listening Port: </b><span id="listening_port_http"></span></td>
+              <td><b>HTTPS Listening Port: </b><span id="listening_port_https"></span></td>
+          </tr>
+          <tr>
+              <td><b>Logging Level: </b><span id="logging_level"></span></td>
+              <td><b>Add Caching: </b><span id="add_caching"></span></td>
+              <td><b>Add Rate Limiting: </b><span id="add_rate_limiting"></span></td>
+          </tr>
+          <tr>
+              <td><b>Add Logging: </b><span id="add_logging"></span></td>
+              <td><b>Disable Body Limit: </b><span id="disable_default_body_limit"></span></td>
+              <td><b>SQL Injection Protection: </b><span id="add_sql_injection_protection"></span></td>
+          </tr>
+          <tr>
+            <td><b>Receive Buffer Size: </b><span id="recv_buffer_size"></span></td>
+            <td><b>Send Buffer Size: </b><span id="send_buffer_size"></span></td>
+            <td><b>IP TTL: </b><span id="ip_ttl"></span></td>
+        </tr>
+        <tr>
+          <td colspan="2"><b>TCP Keep-Alive: </b><span id="tcp_keep_alive_seconds"></span></td>
+          <td><b>Max Backlog: </b><span id="max_backlog"></span></td>
+      </tr>
+      </table>
+    </br>
+    <h1 style="font-size:larger">Dynamic Settings</h1>
+        <table>
+            <tr>
+                <td>Test</td>
+                <td>Test</td>
+            </tr>
+        </table>
+        <a href="/index.html">Home</a>
+
+    <div id="settingsModal" class="modal"  tabindex="-1">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2 id="modalTitle">Modal Header</h2>
+        <form id="modalForm">
+          <input id="modalInput" value="" name="" />
+          <button type="submit">Save</button>
+          <h3 id="success" style="display: none; color:green;">Value saved successfully.</h3>
+          <h3 id="danger" style="display: none; color: red;">Value saved successfully.</h3>
+        </form>
+      </div>
+    </div>
+    </main>
+  </body>
+
+
+</html>

@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "arc2proxy-gui",
+  "productName": "arc2proxy-manager",
   "version": "0.1.0",
-  "identifier": "com.arc2proxy-gui.app",
+  "identifier": "com.arc2proxy-manager.app",
   "build": {
     "frontendDist": "../src"
   },
@@ -10,7 +10,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "ARC2 Proxy GUI App",
+        "title": "ARC2 Proxy Manager",
         "width": 800,
         "height": 600
       }

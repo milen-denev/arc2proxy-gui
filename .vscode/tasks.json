@@ -4,7 +4,7 @@
         {
             "label": "buildCargo",
             "type": "shell",
-            "command": "cargo build",
+            "command": "cargo tauri dev",
             "args": [],
             "presentation": {
                 "reveal": "always",
@@ -13,21 +13,6 @@
 			"options": {
 				"shell": {
 					"executable": "powershell.exe"
-				}
-			}
-        },
-        {
-            "label": "run",
-            "type": "shell",
-            "command": "./${workspaceRoot}/target/debug/${workspaceRootFolderName}",
-            "args": [],
-            "presentation": {
-                "reveal": "always",
-            },
-            "problemMatcher": [],
-			"options": {
-				"shell": {
-					"executable": "nu"
 				}
 			}
         }

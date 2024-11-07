@@ -16,7 +16,7 @@
 
 .container {
   margin: 0;
-  padding-top: 10vh;
+  padding-top: 2vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,12 +41,12 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: white;
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: #491bb1!important;
 }
 
 h1 {
@@ -108,4 +108,149 @@ button {
   button:active {
     background-color: #0f0f0f69;
   }
+}
+
+/* Basic table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #2b2b2b;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Table headers */
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+th {
+  background: linear-gradient(135deg, #4b4b4b, #2b2b2b);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* Alternating row colors */
+tr:nth-child(even) {
+  background-color: #3a3a3a;
+}
+
+tr:nth-child(odd) {
+  background-color: #2e2e2e;
+}
+
+/* Hover effects */
+tr:hover {
+  background-color: #555;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+td:hover {
+  background-color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  th, td {
+    padding: 10px;
+  }
+  th {
+    font-size: 14px;
+  }
+  td {
+    font-size: 13px;
+  }
+}
+
+h1 {
+  font-size: 3em;
+  text-transform: uppercase;
+  background: white;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* Decorative underline */
+h1::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #491bb1;
+  margin-top: 10px;
+}
+
+/* Modal container */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(15, 15, 15, 0.8); /* Semi-transparent background */
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #491bb1, #0f0f0f);
+  margin: 10% auto;
+  padding: 30px 20px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 500px;
+  position: relative;
+  color: #fff;
+  animation: slideDown 0.5s ease-out;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  outline: none; /* Remove focus outline */
+}
+
+.modal * {
+  color: white;
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* 10% from top, centered */
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  position: relative;
+  animation: fadeIn 0.5s;
+}
+
+/* Close button */
+.close-button {
+  color: black;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #000;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
