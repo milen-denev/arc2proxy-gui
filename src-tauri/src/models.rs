@@ -27,7 +27,14 @@ pub struct ProxyConfiguration {
     pub send_buffer_size: Option<usize>,
     pub ip_ttl: Option<u32>,
     pub tcp_keep_alive_seconds: Option<u64>,
-    pub max_backlog: Option<i32>
+    pub max_backlog: Option<i32>,
+    pub enable_streaming: Option<bool>,
+    pub nonblocking: Option<bool>,
+    pub nodelay: Option<bool>,
+    pub proxy_nodelay: Option<bool>,
+    pub proxy_keepalive_sec: Option<u32>,
+    pub proxy_timeout: Option<u16>,
+    pub proxy_min_tls_version:  Option<String>
 }
 
 #[derive(serde::Serialize)]
@@ -54,7 +61,14 @@ pub struct ProxyConfigurationInner {
     pub send_buffer_size: Option<usize>,
     pub ip_ttl: Option<u32>,
     pub tcp_keep_alive_seconds: Option<u64>,
-    pub max_backlog: Option<i32>
+    pub max_backlog: Option<i32>,
+    pub enable_streaming: bool,
+    pub nonblocking: bool,
+    pub nodelay: bool,
+    pub proxy_nodelay: bool,
+    pub proxy_keepalive_sec: u32,
+    pub proxy_timeout: u16,
+    pub proxy_min_tls_version: String
 }
 
 impl ProxyConfiguration {
@@ -97,7 +111,25 @@ impl ProxyConfiguration {
             }
         };
 
-        let logging_level = {
+        let logging_level = if cfg!(debug_assertions) {
+            if let Some(level) = self.logging_level.clone() {
+                if 
+                    level.starts_with("off") || 
+                    level.starts_with("trace") || 
+                    level.starts_with("debug") || 
+                    level.starts_with("info") || 
+                    level.starts_with("warn") || 
+                    level.starts_with("error") {
+                    level
+                }
+                else {
+                    panic!("Provided logging level is incorrect, select one of those: off, trace, debug, info, warn, error.")
+                }
+            }
+            else {
+                DEV_LOGGING_LEVEL.into()
+            }
+        } else {
             if let Some(level) = self.logging_level.clone() {
                 if 
                     level.starts_with("off") || 
@@ -133,6 +165,68 @@ impl ProxyConfiguration {
             }
         };
 
+        let enable_streaming: bool = {
+            if let Some(enable_streaming) = self.enable_streaming {
+                enable_streaming
+            } else {
+                true
+            }
+        };
+
+        let nonblocking: bool = {
+            if let Some(nonblocking) = self.nonblocking {
+                nonblocking
+            } else {
+                true
+            }
+        };
+
+        let nodelay: bool = {
+            if let Some(nodelay) = self.nodelay {
+                nodelay
+            } else {
+                true
+            }
+        };
+
+        let proxy_nodelay: bool = {
+            if let Some(proxy_nodelay) = self.proxy_nodelay {
+                proxy_nodelay
+            } else {
+                true
+            }
+        };
+
+        let proxy_keepalive_sec: u32 = {
+            if let Some(proxy_keepalive_sec) = self.proxy_keepalive_sec {
+                proxy_keepalive_sec
+            } else {
+                120
+            }
+        };
+
+        let proxy_timeout: u16 = {
+            if let Some(proxy_timeout) = self.proxy_timeout {
+                proxy_timeout
+            } else {
+                45
+            }
+        };
+
+        let proxy_min_tls_version: String = {
+            if let Some(proxy_min_tls_version) = self.proxy_min_tls_version.clone() {
+                match proxy_min_tls_version.as_str() {
+                    "TLS_1_0" => proxy_min_tls_version,
+                    "TLS_1_1" => proxy_min_tls_version,
+                    "TLS_1_2" => proxy_min_tls_version,
+                    "TLS_1_3" => proxy_min_tls_version,
+                    _ => panic!("Invalid TLS value.")
+                }
+            } else {
+                "TLS_1_3".into()
+            }
+        };
+
         ProxyConfigurationInner {
             configuration_file_found: config_file_found,
             listening_address: listening_address,
@@ -155,7 +249,14 @@ impl ProxyConfiguration {
             send_buffer_size: self.send_buffer_size.clone(),
             ip_ttl: self.ip_ttl.clone(),
             tcp_keep_alive_seconds: self.tcp_keep_alive_seconds.clone(),
-            max_backlog: self.max_backlog.clone()
+            max_backlog: self.max_backlog.clone(),
+            enable_streaming: enable_streaming,
+            nodelay: nodelay,
+            nonblocking: nonblocking,
+            proxy_nodelay: proxy_nodelay,
+            proxy_keepalive_sec: proxy_keepalive_sec,
+            proxy_timeout: proxy_timeout,
+            proxy_min_tls_version: proxy_min_tls_version
         }
     }
 
@@ -195,7 +296,14 @@ impl ProxyConfiguration {
                 send_buffer_size: None,
                 ip_ttl: None,
                 tcp_keep_alive_seconds: None,
-                max_backlog: None
+                max_backlog: None,
+                enable_streaming: true,
+                nonblocking: true,
+                nodelay: true,
+                proxy_nodelay: true,
+                proxy_keepalive_sec: 120,
+                proxy_timeout: 45,
+                proxy_min_tls_version: "TLS_1_3".into()
             }
         } else {
             ProxyConfigurationInner {
@@ -220,7 +328,14 @@ impl ProxyConfiguration {
                 send_buffer_size: None,
                 ip_ttl: None,
                 tcp_keep_alive_seconds: None,
-                max_backlog: None
+                max_backlog: None,
+                enable_streaming: true,
+                nonblocking: true,
+                nodelay: true,
+                proxy_nodelay: true,
+                proxy_keepalive_sec: 120,
+                proxy_timeout: 45,
+                proxy_min_tls_version: "TLS_1_3".into()
             }
         }
     }
@@ -263,7 +378,14 @@ impl Default for ProxyConfigurationInner {
                 send_buffer_size: None,
                 ip_ttl: None,
                 tcp_keep_alive_seconds: None,
-                max_backlog: None
+                max_backlog: None,
+                enable_streaming: true,
+                nonblocking: true,
+                nodelay: true,
+                proxy_nodelay: true,
+                proxy_keepalive_sec: 120,
+                proxy_timeout: 45,
+                proxy_min_tls_version: "TLS_1_3".into()
             }
         } else {
             Self {
@@ -288,7 +410,14 @@ impl Default for ProxyConfigurationInner {
                 send_buffer_size: None,
                 ip_ttl: None,
                 tcp_keep_alive_seconds: None,
-                max_backlog: None
+                max_backlog: None,
+                enable_streaming: true,
+                nonblocking: true,
+                nodelay: true,
+                proxy_nodelay: true,
+                proxy_keepalive_sec: 120,
+                proxy_timeout: 45,
+                proxy_min_tls_version: "TLS_1_3".into()
             }
         }
     }
@@ -313,7 +442,11 @@ pub struct ProxyRuleInner {
     pub enable_sql_injection_protection: bool,
     pub disallowed_user_agents: Option<Vec<UserAgentRule>>,
     pub enable_compression: bool,
-    pub compression_flags: Option<String>
+    pub compression_flags: Option<String>,
+    pub enable_minification: bool,
+    pub minification_flags: Option<String>,
+    pub enable_webp_transformation: bool,
+    pub webp_transformation_min_age: Option<u64>
 }
 
 #[derive(serde::Serialize)]
